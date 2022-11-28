@@ -1,5 +1,5 @@
 <template>
-   <div class="overflow-y-auto h-screen px-3 bg-gray-200 dark:bg-gray-900 pt-12">
+   <div class="overflow-y-auto h-full px-3 bg-gray-200 dark:bg-gray-900 pt-12">
       <ul class="space-y-2">
          <li>
             <router-link :to="{name:'home'}" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">

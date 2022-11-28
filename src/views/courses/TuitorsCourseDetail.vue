@@ -4,23 +4,47 @@
         <p class="text-baseline dark:text-gray-200">{{ course.description }}</p>
     </div>
 
-    <div class="pt-4">
+    <div class="pt-4" v-if="course.lesson === null">
         <h2 class="py-4 font-bold dark:text-gray-400 text-3xl">Course has no lessons</h2>
     </div>
 
-    <button
-        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button" data-modal-toggle="defaultModal" @click="isOpen = !isOpen">Add Lesson</button>
+    <div class="py-8">
+        <button
+            class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button" data-modal-toggle="defaultModal" @click="isOpen = !isOpen">Add Lesson</button>
+    </div>
 
-<div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" :class="{ hidden: isOpen }">
-    <div class="pt-32 mx-auto w-full max-w-md h-full md:h-auto">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal">
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                <span class="sr-only" @click="isOpen = !isOpen">Close modal</span>
-            </button>
-            <div class="py-6 px-6 lg:px-8">
+    <div class="rouded my-4 py-4 px-4 rounded-md dark:bg-slate-600" v-for="lesson in course.lesson" :key="course.pk">
+        <h3 class="dark:text-white font-medium">{{ lesson.title }}</h3>
+        <p class="dark:text-gray-300 font-baseline">{{ lesson.content }}</p>
+
+        <div v-if="!lesson.courseVideo && !lesson.courseDocument" class="pt-3">
+            <p class="py-4">Add Lesson video or Document</p>
+            <div class="flex mb-4">
+                <button type="button" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add video</button>
+                <button type="button" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add Document</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <Modal v-show="isOpen" @close="closeModal">
+        <!-- <header
+        id="modal-header"
+        class="px-4 py-6 flex justify-between items-center border-b-2 border-white"
+      >
+        <slot name="header">Dummy header</slot>
+        <button
+          type="button"
+          class="w-7 p-2 bg-gray-300 rounded-full"
+          @click="close"
+        >
+          <img src="../assets/letter-x.svg" alt="close button" />
+        </button>
+      </header> -->
+    <template v-slot:body>
+        <div class="px-6 lg:px-8">
                 <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create Lesson for {{ course.name }}</h3>
                 <form class="space-y-6" @submit.prevent="createLesson">
                     <div>
@@ -34,22 +58,31 @@
                     <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Course</button>
                 </form>
             </div>
-        </div>
-    </div>
-</div> 
+    </template>
+<!-- 
+    <footer id="modal-footer" class="px-4 py-6 border-t-2 border-white">
+        <slot name="footer"></slot>
+      </footer> -->
+  </Modal>
+
 
 </template>
 
 <script>
+import Modal from "@/components/Modal.vue";
 import axios from 'axios';
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue';
 import { userStore, pagesInteractivity } from '@/stores/index'
 export default {
+    components: {
+    Modal,
+},
     setup() {
         const course = ref([])
-        const isOpen = ref(true)
+        const isOpen = ref(false)
         const route = useRoute()
+        const courseID = ref(0)
 
         // data variables to post
         const coursename = ref('')
@@ -59,7 +92,8 @@ export default {
             axios.get(`course/${route.params.slug}`)
                 .then(response => {
                     course.value = response.data;
-                    console.log(response.data)
+                    courseID.value = response.data.pk
+                    console.log(course.value);
                 })
                 .catch(error => {
                     console.log(error);
@@ -70,26 +104,31 @@ export default {
             console.log(pk);
         }
 
-        function toogleSwitch(){
-            isOpen.value =! isOpen.value
+        function showModal() {
+            isOpen.value = true
+        }
+
+        function closeModal() {
+            isOpen.value = false
         }
 
         // a function to create course fo tuitors only
-        function createLesson(){
-            const data =  {
+        function createLesson() {
+            const data = {
                 title: coursename.value,
                 content: courseDescription.value,
-                course : course.pk
+                course: courseID.value
             }
-            axios.post('course/lesson/create/',data)
-            .then(response =>{
-
-            }).catch(error => {
-                console.log(error);
-            })
+            console.log(data);
+            axios.post('course/lesson/create/', data)
+                .then(response => {
+                    console.log(response);
+                }).catch(error => {
+                    console.log(error);
+                })
         }
 
-        return { coursename, courseDescription,course,isOpen, navigateTo,toogleSwitch,createLesson,}
+        return { coursename, courseDescription, course, isOpen, navigateTo, createLesson,showModal,closeModal }
     }
 
 }

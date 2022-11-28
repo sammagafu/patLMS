@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row">
     <!-- <p class="text-white">{{ userstore.userData.is_student }}</p> -->
-    <aside class="basis-1/5" aria-label="Sidebar">
+    <aside class="basis-1/5 sticky" aria-label="Sidebar">
       <template v-if="userstore.userData.is_student === 'true'">
         <StudentSideBar />
       </template>

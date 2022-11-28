@@ -11,7 +11,7 @@
                     <th class="p-2 whitespace-nowrap">
                         <div class="font-semibold text-left">Course Image</div>
                     </th>
-                    <th class="p-2 whitespace-nowrap">
+                    <th class="p-2 whitespace-normal">
                         <div class="font-semibold text-left">Course Name</div>
                     </th>
                     <th class="p-2 whitespace-nowrap">

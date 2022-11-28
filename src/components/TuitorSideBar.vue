@@ -1,5 +1,5 @@
 <template>
-   <div class="overflow-y-auto h-screen px-3 bg-gray-200 dark:bg-gray-900 pt-12">
+   <div class="overflow-y-auto h-full px-3 bg-gray-200 dark:bg-gray-900 pt-12">
       <ul class="space-y-2">
 
          <li>
