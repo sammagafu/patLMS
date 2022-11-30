@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-16" @click="isOpen === false">
+    <div class="pt-16">
         <h2 class="py-4 font-bold dark:text-gray-400 text-3xl">{{ course.name }}</h2>
         <p class="text-baseline dark:text-gray-200">{{ course.description }}</p>
     </div>
@@ -11,7 +11,7 @@
     <div class="py-8">
         <button
             class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            type="button" data-modal-toggle="defaultModal" @click="isOpen = !isOpen">Add Lesson</button>
+            type="button" data-modal-toggle="defaultModal" @click="showModal">Add Lesson</button>
     </div>
 
     <div class="rouded my-4 py-4 px-4 rounded-md dark:bg-slate-600" v-for="lesson in course.lesson" :key="course.pk">
@@ -21,7 +21,7 @@
         <div v-if="!lesson.courseVideo && !lesson.courseDocument" class="pt-3">
             <p class="py-4">Add Lesson video or Document</p>
             <div class="flex mb-4">
-                <button type="button" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add video</button>
+                <button type="button" @click="addVideoModal" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add video</button>
                 <button type="button" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add Document</button>
             </div>
         </div>
@@ -64,6 +64,16 @@
         <slot name="footer"></slot>
       </footer> -->
   </Modal>
+<Modal v-show="addvideo" @close="closeAddVideo">
+    <template v-slot:body>
+        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add video </h3>
+        <div>
+            <label for="videolink" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Video Link</label>
+            <input type="url" name="video" id="videolink" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="course name" required>
+            <input type="hidden" name="" :value="course.pk">
+        </div>
+    </template>
+</Modal>
 
 
 </template>
@@ -83,6 +93,7 @@ export default {
         const isOpen = ref(false)
         const route = useRoute()
         const courseID = ref(0)
+        const addvideo = ref(false)
 
         // data variables to post
         const coursename = ref('')
@@ -112,6 +123,14 @@ export default {
             isOpen.value = false
         }
 
+        function addVideoModal(){
+            addvideo.value = true
+        }
+
+        function closeAddVideo(){
+            addvideo.value = false
+        }
+
         // a function to create course fo tuitors only
         function createLesson() {
             const data = {
@@ -128,7 +147,7 @@ export default {
                 })
         }
 
-        return { coursename, courseDescription, course, isOpen, navigateTo, createLesson,showModal,closeModal }
+        return { coursename, courseDescription, course, isOpen,addvideo, navigateTo, createLesson,showModal,closeModal,addVideoModal,closeAddVideo }
     }
 
 }
