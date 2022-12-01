@@ -1,6 +1,6 @@
 <template>
     <div class="py-16">
-        <h2 class="py-4 font-bold dark:text-gray-400 text-3xl">Welcome {{}}</h2>
+        <h2 class="py-4 font-bold dark:text-gray-400 text-3xl">Welcome {{userstore.userData.full_name}}</h2>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 dark:text-gray-100">
 
             <div class="card rounded-lg shadow py-9 px-8 dark:bg-slate-900">
@@ -60,6 +60,17 @@
         </div>
     </div>
 </template>
-<style>
 
-</style>
+<script>
+import { userStore, pagesInteractivity } from '@/stores/index'
+
+export default{
+    setup(){
+        const userstore = userStore()
+
+        return {
+            userstore
+        }
+    }
+}
+</script>
