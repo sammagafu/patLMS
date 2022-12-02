@@ -21,8 +21,13 @@
             </router-link>
             <div class="px-5 py-6">
                 <router-link :to="{name:'course-detail',params:{slug:course.slug}}">
-                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{{course.name}}</h5>
+                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-blue-400">{{course.name}}</h5>
             </router-link>
+
+            <div class="flex flex-row justify-between py-3 font-semibold tracking-tight text-gray-900 dark:text-blue-200">
+                        <h6>CPD Points</h6>
+                        <h6>{{course.points}} Points</h6>
+            </div>
                 <div class="py-3">
                     <p class="dark:text-gray-400"> {{course.description.substring(0,100)+".." }}</p>
                 </div>
