@@ -46,6 +46,21 @@ const router = createRouter({
               name:'course-create',
               component : () => import('@/views/courses/CourseCreate.vue')
             },
+            {
+              path:'enrolled',
+              name:'enrolled',
+              component : () => import('@/views/courses/EnrolledCourse.vue')
+            },
+          ]
+        },
+        {
+          path:'/discussion/',
+          children:[
+              {
+                path:'',
+                name:'discussion-list',
+                component : () => import('@/views/discussion/DiscussionListStudent.vue')
+              },
           ]
         },
       ]
