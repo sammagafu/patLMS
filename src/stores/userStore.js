@@ -5,7 +5,8 @@ import {
 import {
   defineStore
 } from 'pinia'
-import axios from 'axios'
+// import axios from 'axios'
+import axiosInstance from '../http'
 
 export const userStore = defineStore({
   id: 'userdata',
@@ -34,10 +35,10 @@ export const userStore = defineStore({
     },
 
     getUserData() {
-      axios.get('auth/users/me/', {
-        headers: {
-          "Authorization": `Bearer ${this.authToken}`
-        }
+      axiosInstance.get('auth/users/me/', {
+        // headers: {
+        //   "Authorization": `Bearer ${this.authToken}`
+        // }
       }).then(response => {
         this.setUser({
           'userID': response.data.pk,

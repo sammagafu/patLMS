@@ -1,9 +1,8 @@
 import axios from "axios";
-import { AuthService } from "./service/AuthService";
+import { AuthService } from "../service/AuthService";
 
 const axiosInstance = axios.create({
-  // baseURL: "https://api.awamupay.co.tz",
-  baseURL: process.env.VUE_APP_API_BASE_URL,
+  baseURL: 'http://localhost:8000/api/v1/'
 });
 
 const UNAUTHORIZED = 401;
@@ -14,12 +13,13 @@ axiosInstance.interceptors.request.use((config) => {
   if (
     !/\/auth\/login/.test(config.url) &&
     !/\/auth\/refresh/.test(config.url)
+    
   ) {
-    config.headers["Authorization"] = `Bearer ${AuthService.getToken()}`;
+    config.headers["Authorization"] = `Bearer ${AuthService.getToken('access')}`;
   }
-  return config;
+  return config;s
 });
-
+// auth/users/me/
 axiosInstance.interceptors.response.use(
   async (response) => {
     // We're going to intercept the successful login response.
@@ -29,15 +29,18 @@ axiosInstance.interceptors.response.use(
       // Save the token
       AuthService.saveToken(response.data);
       // Issue the request to get own details
-      const response2 = await axiosInstance.get("/auth/me");
-
-      // Return response 2
-      return response2;
+      const usersData = await axiosInstance.get("/auth/users/me/",
+      {
+        headers: {
+          Authorization: `Bearer ${AuthService.getToken("access")}`,
+        },
+      });
+      return usersData;
     }
 
     // If this is a response to the `/auth/me` request,
     // we're going to save logged in data to the session storage
-    if (/\/auth\/me/.test(response.config.url)) {
+    if (/\/auth\/users\/me/.test(response.config.url)) {
       // Save user data to the session storage.
       AuthService.saveCurrentUserData(response.data);
     }
@@ -56,11 +59,11 @@ axiosInstance.interceptors.response.use(
         originalConfig._retry = true;
         try {
           const rs = await axiosInstance.post(
-            "/auth/refresh",
-            {},
+            "auth/login/refresh/",
+            {refresh:AuthService.getToken("refresh")},
             {
               headers: {
-                Authorization: `Bearer ${AuthService.getToken("refreshToken")}`,
+                Authorization: `Bearer ${AuthService.getToken("refresh")}`,
               },
             }
           );

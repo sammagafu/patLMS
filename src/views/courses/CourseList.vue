@@ -15,7 +15,7 @@
     </div>
 
     <div class="grid grid-cols-3 gap-8">
-        <div class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700" v-for="course in course">
+        <div class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700" v-for="course in course" :key="course.pk">
             <router-link :to="{name:'course-detail',params:{slug:course.slug}}">
                 <img class="rounded-t-lg" :src="course.cover" alt="course name">
             </router-link>

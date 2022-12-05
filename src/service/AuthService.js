@@ -1,13 +1,20 @@
+import {userStore} from '../stores/userStore'
+
+
 export class AuthService {
   static isAuthenticated() {
     return AuthService.getToken() != null;
   }
 
   static saveToken(token) {
+    const userstore = userStore()
+    userstore.authToken  = token;
+    localStorage.setItem("access", token.access)
+    localStorage.setItem("refresh", token.refresh)
     if(token.remember){
-      localStorage.setItem("token", JSON.stringify(token));
+      localStorage.setItem("access", JSON.stringify(access));
     }else{
-      sessionStorage.setItem("token", JSON.stringify(token));
+      sessionStorage.setItem("access", JSON.stringify(access));
     }
   }
 
@@ -19,27 +26,11 @@ export class AuthService {
     return JSON.parse(localStorage.getItem("current-user"));
   }
 
-  static getToken(tokenType = "token") {
+  static getToken(tokenType = "refresh") {
     try {
-      let [token] =
-        document.cookie != null && document.cookie.indexOf(";") !== -1
-          ? document.cookie
-              .split("; ")
-              .find((row) => row.startsWith("token="))
-              .split("=")
-          : [];
-
-      if (!token || !token.trim().length) {
-        // Read from sessionStorage
-        const storedToken = localStorage.getItem("token") ? localStorage.getItem("token") : sessionStorage.getItem("token");
-        const tokenPayload = storedToken ? JSON.parse(storedToken) : null;
-
-        if (tokenPayload != null) {
-          token = tokenPayload[tokenType];
-        }
-      }
-
-      return token;
+        // Read from sessionStorage & local
+        const storedToken = localStorage.getItem(tokenType) ? localStorage.getItem(tokenType) : sessionStorage.getItem(tokenType);
+      return storedToken;
     } catch (err) {
       console.error(err);
       return null;

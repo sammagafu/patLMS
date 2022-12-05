@@ -72,7 +72,8 @@
 
 <script>
 import { ref } from 'vue';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosInstance from '../http';
 export default {
   setup(){
     const fullname =  ref('')
@@ -104,7 +105,7 @@ export default {
     formdata.append('is_student',student.value)
     formdata.append('is_tuitor',tuitor.value)
 
-    axios.post('auth/register/',formdata,headers).then(response =>{
+    axiosInstance.post('auth/register/',formdata,headers).then(response =>{
       
     }).catch(error =>{})
     fullname.value = ''

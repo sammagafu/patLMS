@@ -52,7 +52,8 @@
 <script>
 import { userStore, pagesInteractivity } from '@/stores/index'
 import { ref } from 'vue';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosInstance from '../http';
 import { useRouter, useRoute } from 'vue-router'
 
 
@@ -74,13 +75,13 @@ export default {
         password: this.password
       }
 
-      axios.post('auth/login/',  loginData ).then(response => {
-        axios.defaults.headers.common["Authorization"] = ""
-        localStorage.removeItem("token")
+      axiosInstance.post('auth/login/',  loginData ).then(response => {
+        // axios.defaults.headers.common["Authorization"] = ""
+        // localStorage.removeItem("token")
         userstore.authToken = response.data.access
         userstore.refreshToken = response.data.refresh
         userstore.isAuthenticated = true
-        axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access
+        // axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access
         localStorage.setItem("access", response.data.access)
         localStorage.setItem("refresh", response.data.refresh)
 
