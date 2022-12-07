@@ -14,8 +14,7 @@
                 </div>
                 <p class="text-baseline dark:text-gray-200">{{ course.description }}</p>
             </div>
-            <div class="rouded my-4 py-4 px-4 rounded-md dark:bg-slate-600" v-for="lesson in course.lesson"
-                :key="course.pk">
+            <div class="rouded my-4 py-4 px-4 rounded-md dark:bg-slate-600" v-for="lesson in course.lesson">
                 <h3 class="dark:text-white font-medium text-2xl">{{ lesson.title }}</h3>
                 <div class="">
                     <div class="py-2 flex flex-row">
@@ -57,7 +56,7 @@
                     <h3 class="font-bold text-gray-100 text-2xl">TZS {{ course.courseprice }}</h3>
                 </div>
                 <div class="py-3 mx-2">
-                    <button type="button"
+                    <button type="button" @click="enrollCource"
                         class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Enroll
                         Now</button>
                 </div>
@@ -75,6 +74,7 @@ import axios from 'axios';
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue';
 import { userStore, pagesInteractivity } from '@/stores/index'
+import axiosInstance from "../../http";
 export default {
     components: {
         Modal,
@@ -91,7 +91,7 @@ export default {
         const courseDescription = ref('')
 
         onMounted(() => {
-            axios.get(`course/${route.params.slug}`)
+            axiosInstance.get(`course/${route.params.slug}`)
                 .then(response => {
                     course.value = response.data;
                     courseID.value = response.data.pk
@@ -123,14 +123,13 @@ export default {
         }
 
         // a function to create course fo tuitors only
-        function createLesson() {
+        function enrollCource() {
             const data = {
-                title: coursename.value,
-                content: courseDescription.value,
-                course: courseID.value
+                course:course.value.pk,
+                is_paid:true
             }
             console.log(data);
-            axios.post('course/lesson/create/', data)
+            axiosInstance.post('course/enrolled/', data)
                 .then(response => {
                     console.log(response);
                 }).catch(error => {
@@ -138,7 +137,7 @@ export default {
                 })
         }
 
-        return { coursename, courseDescription, course, isOpen, addvideo, navigateTo, createLesson, showModal, closeModal, addVideoModal, closeAddVideo }
+        return { coursename, courseDescription, course, isOpen, addvideo, navigateTo, enrollCource, showModal, closeModal, addVideoModal, closeAddVideo }
     }
 
 }

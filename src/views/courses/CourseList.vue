@@ -47,12 +47,14 @@
 import axios from 'axios';
 import { ref,onMounted } from 'vue';
 import { userStore, pagesInteractivity } from '@/stores/index'
+import axiosInstance from '../../http';
 export default {
     setup(){
         const course = ref([])
 
         onMounted(() => {
-            axios.get('course/')
+            // axiosInstance.get('course/enrolled/')
+            axiosInstance.get('course/')
                 .then(response => {
                     course.value = response.data;
                     console.log(response.data)
