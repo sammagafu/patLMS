@@ -2,8 +2,8 @@
   <div>
     <div v-html="url"></div>
   </div>
-  <div>{{title}}</div>
-  <div>{{what_you_will_learn}}</div>
+  <div class="py-3 text-2xl dark:text-gray-200">{{title}}</div>
+  <div class="text-sm dark:text-gray-400">{{learn}}</div>
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
   props: {
     title: String,
     url: String,
-    what_you_will_learn:String
+    learn:String
   },
   
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="pt-32">
-    <div class="bg-gray-100 w-1/2 py-24 px-24 mx-auto text-gray-800 shadow-md rounded">
+    <div class="bg-gray-100 w-1/2 py-24 px-24 mx-auto text-gray-800 shadow-md rounded dark:">
       <img src="../assets/images/logo.png" alt="PAT Logo" class="logo mx-auto">
       <h2 class="text-center py-3">Welcome to PAT Learning Management System. <br> Don't have an account yet?
         <router-link :to="{ name: 'register' }" class="text-sky-600">Sign up</router-link>

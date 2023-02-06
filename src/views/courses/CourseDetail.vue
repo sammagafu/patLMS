@@ -14,7 +14,9 @@
                 </div>
                 <p class="text-baseline dark:text-gray-200">{{ course.description }}</p>
             </div>
-            <div class="rouded my-4 py-4 px-4 rounded-md dark:bg-slate-600" v-for="lesson in course.lesson">
+            <!-- check if is internal Module -->
+            <div class="" v-if="course.module === 'Internal Module' && course.lesson != null">
+                <div class="rouded my-4 py-4 px-4 rounded-md dark:bg-slate-600" v-for="lesson in course.lesson" :key="lesson.index">
                 <h3 class="dark:text-white font-medium text-2xl">{{ lesson.title }}</h3>
                 <div class="">
                     <div class="py-2 flex flex-row">
@@ -46,6 +48,13 @@
                     </div>
                 </div>
             </div>
+            </div>
+            <div v-if="course.module === 'Area9 Module'">
+                
+            </div>
+            <!-- check if is internal Module -->
+
+            
         </div>
         <div class="basis-1/4">
             <div class="bg-slate-600">

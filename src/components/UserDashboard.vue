@@ -1,7 +1,7 @@
 <template>
     <div class="py-2">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 dark:text-gray-100">
-            <div class="card rounded-lg shadow py-9 px-8 dark:bg-slate-900">
+            <div class="card rounded-lg shadow py-9 px-8 dark:bg-red-900">
                 <div class="flex flex-row items-center justify-between">
                     <div class="flex flex-col items-start">
                         <div class="text-baseline">CPD Points Earned</div>
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="card rounded-lg shadow py-9 px-8 dark:bg-slate-900">
+            <div class="card rounded-lg shadow py-9 px-8 dark:bg-red-900">
                 <div class="flex flex-row items-center justify-between">
                     <div class="flex flex-col items-start">
                         <div class="text-baseline">Courses Completed</div>
